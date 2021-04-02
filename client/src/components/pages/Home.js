@@ -61,18 +61,6 @@ const Home = () => {
     return recipe;
   };
 
-  const logout = async () => {
-    const res = await fetch(
-      'https://legassick-recipes.herokuapp.com/api/v1/auth/logout',
-      {
-        method: 'GET',
-        credentials: 'include'
-      }
-    );
-    const data = await res.json();
-    console.log(data);
-  };
-
   return (
     <div>
       <div className='flex justify-between items-center'>
@@ -84,9 +72,7 @@ const Home = () => {
         {!user ? (
           <Link to='/login'>Login</Link>
         ) : (
-          <Link to='/' onClick={logout}>
-            Logout
-          </Link>
+          <Link to='/logout'>Logout</Link>
         )}
       </div>
       <Search onAdd={searchRecipes} />

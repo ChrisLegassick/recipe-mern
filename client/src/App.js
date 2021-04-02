@@ -4,6 +4,7 @@ import Login from './components/pages/Login';
 import Create from './components/pages/Create';
 import Recipe from './components/pages/Recipe';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Logout from './components/pages/Logout';
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
             </Route>
             <Route exact path='/login'>
               <Login />
+            </Route>
+            <Route exact path='/logout'>
+              <Logout />
             </Route>
             <Route exact path='/create'>
               <Create />

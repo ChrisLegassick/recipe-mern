@@ -27,22 +27,8 @@ const Login = () => {
     );
     const data = await res.json();
     console.log(data);
-
-    checkUser();
     // TODO - insert logic to only push to homepage after successful log in attempt
     history.push('/');
-  };
-
-  const checkUser = async () => {
-    const res = await fetch(
-      'https://legassick-recipes.herokuapp.com/api/v1/auth/me',
-      {
-        method: 'GET',
-        credentials: 'include'
-      }
-    );
-    const data = await res.json();
-    console.log(data);
   };
 
   return (
