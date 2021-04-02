@@ -2,20 +2,24 @@ import Header from '../Header';
 import { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
-const Login = () => {
+const Register = () => {
+  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
 
   const onSubmit = async e => {
     e.preventDefault();
     const user = {
+      name,
       username,
+      email,
       password
     };
 
     const res = await fetch(
-      'https://legassick-recipes.herokuapp.com/api/v1/auth/login',
+      'https://legassick-recipes.herokuapp.com/api/v1/auth/register',
       {
         method: 'POST',
         credentials: 'include',
@@ -34,8 +38,20 @@ const Login = () => {
   return (
     <div>
       <Link to='/'>Go back</Link>
-      <Header title='Login' />
+      <Header title='Register' />
       <form onSubmit={onSubmit}>
+        <label className='flex flex-col mb-6'>
+          Name:
+          <input
+            className='my-2'
+            type='text'
+            required
+            value={name}
+            onChange={e => {
+              setName(e.target.value);
+            }}
+          />
+        </label>
         <label className='flex flex-col mb-6'>
           Username:
           <input
@@ -45,6 +61,18 @@ const Login = () => {
             value={username}
             onChange={e => {
               setUsername(e.target.value);
+            }}
+          />
+        </label>
+        <label className='flex flex-col mb-6'>
+          Email:
+          <input
+            className='my-2'
+            type='email'
+            required
+            value={email}
+            onChange={e => {
+              setEmail(e.target.value);
             }}
           />
         </label>
@@ -60,10 +88,10 @@ const Login = () => {
             }}
           />
         </label>
-        <input type='submit' value='Login' className='bg-green-400' />
+        <input type='submit' value='Register' className='bg-green-400' />
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Register;

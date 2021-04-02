@@ -69,11 +69,14 @@ const Home = () => {
         ) : (
           <Header title={'Hello ' + user.name} />
         )}
-        {!user ? (
-          <Link to='/login'>Login</Link>
-        ) : (
-          <Link to='/logout'>Logout</Link>
-        )}
+        <div className='flex flex-col'>
+          {!user ? (
+            <Link to='/login'>Login</Link>
+          ) : (
+            <Link to='/logout'>Logout</Link>
+          )}
+          {!user && <Link to='/register'>register</Link>}
+        </div>
       </div>
       <Search onAdd={searchRecipes} />
       <div className='my-5 flex justify-between'>
