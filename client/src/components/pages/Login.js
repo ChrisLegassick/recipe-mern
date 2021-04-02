@@ -1,9 +1,11 @@
-import { useState } from 'react';
 import Header from '../Header';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -27,6 +29,8 @@ const Login = () => {
     console.log(data);
 
     checkUser();
+    // TODO - insert logic to only push to homepage after successful log in attempt
+    history.push('/');
   };
 
   const checkUser = async () => {

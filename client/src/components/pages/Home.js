@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState('');
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -21,7 +22,20 @@ const Home = () => {
       return recipes;
     };
     fetchRecipes();
+    checkUser();
   }, []);
+
+  const checkUser = async () => {
+    const res = await fetch(
+      'https://legassick-recipes.herokuapp.com/api/v1/auth/me',
+      {
+        method: 'GET',
+        credentials: 'include'
+      }
+    );
+    const data = await res.json();
+    setUser(data.data);
+  };
 
   const searchRecipes = async ({ text }) => {
     setIsLoading(true);
@@ -47,11 +61,33 @@ const Home = () => {
     return recipe;
   };
 
+  const logout = async () => {
+    const res = await fetch(
+      'https://legassick-recipes.herokuapp.com/api/v1/auth/logout',
+      {
+        method: 'GET',
+        credentials: 'include'
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+  };
+
   return (
     <div>
       <div className='flex justify-between items-center'>
-        <Header title='My Recipes' />
-        <Link to='/login'>Login</Link>
+        {!user ? (
+          <Header title='Hello' />
+        ) : (
+          <Header title={'Hello ' + user.name} />
+        )}
+        {!user ? (
+          <Link to='/login'>Login</Link>
+        ) : (
+          <Link to='/' onClick={logout}>
+            Logout
+          </Link>
+        )}
       </div>
       <Search onAdd={searchRecipes} />
       <div className='my-5 flex justify-between'>
