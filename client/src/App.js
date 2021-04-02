@@ -12,7 +12,7 @@ function App() {
       password
     };
 
-    const res = await fetch('http://localhost:5000/api/v1/auth/login', {
+    const res = await fetch('/api/v1/auth/login', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -27,7 +27,7 @@ function App() {
   };
 
   const checkUser = async () => {
-    const res = await fetch('http://localhost:5000/api/v1/auth/me', {
+    const res = await fetch('/api/v1/auth/me', {
       method: 'GET',
       credentials: 'include'
     });
