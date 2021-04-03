@@ -37,6 +37,14 @@ const Home = () => {
     setUser(data.data);
   };
 
+  const logout = async () => {
+    await fetch('https://legassick-recipes.herokuapp.com/api/v1/auth/logout', {
+      method: 'GET',
+      credentials: 'include'
+    });
+    setUser('');
+  };
+
   const searchRecipes = async ({ text }) => {
     setIsLoading(true);
     const res = await fetch(
@@ -61,6 +69,27 @@ const Home = () => {
     return recipe;
   };
 
+  const guestLinks = (
+    <>
+      <li>
+        <Link to='/login'>Login</Link>
+      </li>
+      <li>
+        <Link to='/register'>Register</Link>
+      </li>
+    </>
+  );
+
+  const userLinks = (
+    <>
+      <li>
+        <Link to='/' onClick={logout}>
+          Logout
+        </Link>
+      </li>
+    </>
+  );
+
   return (
     <div>
       <div className='flex justify-between items-center'>
@@ -69,14 +98,7 @@ const Home = () => {
         ) : (
           <Header title={'Hello ' + user.name} />
         )}
-        <div className='flex flex-col'>
-          {!user ? (
-            <Link to='/login'>Login</Link>
-          ) : (
-            <Link to='/logout'>Logout</Link>
-          )}
-          {!user && <Link to='/register'>register</Link>}
-        </div>
+        <ul className='flex flex-col'>{!user ? guestLinks : userLinks}</ul>
       </div>
       <Search onAdd={searchRecipes} />
       <div className='my-5 flex justify-between'>

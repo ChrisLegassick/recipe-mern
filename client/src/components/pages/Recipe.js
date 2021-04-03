@@ -33,13 +33,15 @@ const Recipe = () => {
     setShowDelete(false);
   };
 
-  const confirmDelete = () => {
-    fetch(`https://legassick-recipes.herokuapp.com/api/v1/recipes/${id}`, {
-      method: 'DELETE',
-      credentials: 'include'
-    }).then(() => {
-      history.push('/');
-    });
+  const confirmDelete = async () => {
+    await fetch(
+      `https://legassick-recipes.herokuapp.com/api/v1/recipes/${id}`,
+      {
+        method: 'DELETE',
+        credentials: 'include'
+      }
+    );
+    history.push('/');
   };
 
   return (

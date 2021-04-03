@@ -4,7 +4,6 @@ import Login from './components/pages/Login';
 import Create from './components/pages/Create';
 import Recipe from './components/pages/Recipe';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Logout from './components/pages/Logout';
 import Register from './components/pages/Register';
 
 function App() {
@@ -21,9 +20,6 @@ function App() {
             </Route>
             <Route exact path='/register'>
               <Register />
-            </Route>
-            <Route exact path='/logout'>
-              <Logout />
             </Route>
             <Route exact path='/create'>
               <Create />
