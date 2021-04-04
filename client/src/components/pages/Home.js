@@ -22,10 +22,10 @@ const Home = () => {
       return recipes;
     };
     fetchRecipes();
-    checkUser();
+    getUser();
   }, []);
 
-  const checkUser = async () => {
+  const getUser = async () => {
     const res = await fetch(
       'https://legassick-recipes.herokuapp.com/api/v1/auth/me',
       {

@@ -3,30 +3,70 @@ import Button from '../Button';
 import { useParams, Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Delete from '../Delete';
+import Alert from '../Alert';
 
 const Recipe = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState([]);
+  const [user, setUser] = useState('');
+  const [userAllowed, setUserAllowed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showDelete, setShowDelete] = useState(false);
+  const [alert, setAlert] = useState(false);
   const history = useHistory();
 
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      const res = await fetch(
-        `https://legassick-recipes.herokuapp.com/api/v1/recipes/${id}`
-      );
-      const data = await res.json();
-      const recipe = data.data;
-      setIsLoading(false);
-      setRecipe(recipe);
-      return recipe;
-    };
-    fetchRecipe();
-  }, [id]);
+  useEffect(
+    () => {
+      const fetchRecipe = async () => {
+        const res = await fetch(
+          `https://legassick-recipes.herokuapp.com/api/v1/recipes/${id}`
+        );
+        const data = await res.json();
+        const recipe = data.data;
+        setIsLoading(false);
+        setRecipe(recipe);
+        return recipe;
+      };
+      fetchRecipe();
+      getUser();
+    },
+    // eslint-disable-next-line
+    [id]
+  );
+
+  const getUser = async () => {
+    const res = await fetch(
+      'https://legassick-recipes.herokuapp.com/api/v1/auth/me',
+      {
+        method: 'GET',
+        credentials: 'include'
+      }
+    );
+    const data = await res.json();
+    setUser(data.data);
+    checkUserPermissions();
+  };
+
+  const checkUserPermissions = () => {
+    if (recipe.user === user._id || user.role === 'admin') {
+      setUserAllowed(true);
+    }
+  };
+
+  const editRecipe = () => {
+    if (userAllowed) {
+      history.push(`/create/${id}`);
+    } else {
+      setAlert(true);
+    }
+  };
 
   const deleteRecipe = () => {
-    setShowDelete(true);
+    if (userAllowed) {
+      setShowDelete(true);
+    } else {
+      setAlert(true);
+    }
   };
 
   const cancelDelete = () => {
@@ -45,14 +85,15 @@ const Recipe = () => {
   };
 
   return (
-    <div className='relative'>
+    <div>
       <div className='flex justify-between w-full my-10'>
         <Link to='/'>
           <Button text='Go Back' />
         </Link>
-        <Link to={`/create/${id}`}>
+        <Button text='Edit Recipe' onClick={editRecipe} />
+        {/* <Link to={`/create/${id}`}>
           <Button text='Edit Recipe' />
-        </Link>
+        </Link> */}
       </div>
       {isLoading && <div>Loading...</div>}
       <Header title={recipe.name} />
@@ -88,6 +129,7 @@ const Recipe = () => {
       {showDelete && (
         <Delete confirmDelete={confirmDelete} cancelDelete={cancelDelete} />
       )}
+      {alert && <Alert />}
     </div>
   );
 };
